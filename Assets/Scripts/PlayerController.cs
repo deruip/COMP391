@@ -13,9 +13,14 @@ public class PlayerController : MonoBehaviour
     // Public Variables
     public float speed;
     public Boundary boundary;
+    public Transform laserSpawn;
+    public GameObject laser;
+    public float fireDelta = 0.5f;
 
     // Private Variables
     Rigidbody2D rBody;
+    private float nextFire = 0.5F;
+    private float myTime = 0.5f;
 
     // Use this for initialization
     void Start()
@@ -40,6 +45,15 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        myTime += Time.deltaTime;
+        if (Input.GetButton("Fire1") && myTime > nextFire)
+        {
+            nextFire = myTime + fireDelta;
+            // Creating a laser at laserSpawn's position and rotation
+            Instantiate(laser, laserSpawn.position, laserSpawn.rotation);
 
+            nextFire = nextFire - myTime;
+            myTime = 0.0f;
+        }
     }
 }
